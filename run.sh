@@ -1,6 +1,10 @@
 #!/bin/bash -e
 
-mkdir -p /srv/mongodb
-mkdir -p /srv/log/mongodb
+if [[ -n "$PREFIX" ]]; then
+	PREFIX="${PREFIX}_"
+fi
 
-docker run -d --name mongodb -h mongodb.mongodb.server1.docker -e MONGOD_ARGS='--replSet meteor' -v /srv/log/mongodb:/var/log/mongod -v /srv/mongodb:/var/lib/mongodb peerlibrary/mongodb
+mkdir -p "/srv/${PREFIX}mongodb"
+mkdir -p "/srv/log/${PREFIX}mongodb"
+
+docker run -d --name "${PREFIX}mongodb" -h "${PREFIX}mongodb.mongodb.server1.docker" -e MONGOD_ARGS='--replSet meteor' -v "/srv/log/${PREFIX}mongodb:/var/log/mongod" -v "/srv/${PREFIX}mongodb:/var/lib/mongodb" peerlibrary/mongodb
